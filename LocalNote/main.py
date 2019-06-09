@@ -1,17 +1,22 @@
 #coding=utf8
 import sys, os, json, time
+from functools import reduce
 
-from controllers import Controller, convert_html
-from evernoteapi.oauth2 import Oauth
-from local import clear_dir
-from exception import main_wrapper
+# from controllers import Controller, convert_html
+# from evernoteapi.oauth2 import Oauth
+# from local import clear_dir
+# from exception import main_wrapper
+from LocalNote.LocalNote.LocalNote.controllers import Controller, convert_html
+from LocalNote.LocalNote.LocalNote.evernoteapi.oauth2 import Oauth
+from LocalNote.LocalNote.LocalNote.exception import main_wrapper
+from LocalNote.LocalNote.LocalNote.local.storage import clear_dir
 
 DEBUG = False
 
 def sys_print(s, level = 'info'):
     print(('[%-4s] %s'%((level+' '*4)[:4].upper(), s.replace(u'\xa0', ' '))).encode(sys.stdin.encoding))
 def sys_input(s):
-    return raw_input(s.encode(sys.stdin.encoding)).decode(sys.stdin.encoding)
+    return input(s.encode(sys.stdin.encoding)).decode(sys.stdin.encoding)                                  #原rawinput  返回 输入按照s的解码按照系统的输出的解码格式，的编码按照系统的输出的解码格式
 def check_files_format(fn):
     def _check_files_format(*args, **kwargs):
         mainController = Controller()
