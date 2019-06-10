@@ -15,24 +15,24 @@ DEBUG = False
 
 def sys_print(s, level = 'info'):
     print(('[%-4s] %s'%((level+' '*4)[:4].upper(), s.replace(u'\xa0', ' '))).encode(sys.stdin.encoding))
-def sys_input(s):
-    return input(s.encode(sys.stdin.encoding)).decode(sys.stdin.encoding)                                  #原rawinput  返回 输入按照s的解码按照系统的输出的解码格式，的编码按照系统的输出的解码格式
-def check_files_format(fn):
-    def _check_files_format(*args, **kwargs):
-        mainController = Controller()
-        configFound, wrongFiles = mainController.check_files_format()
-        if not configFound:
-            sys_print(u'检测到你不在印象笔记主目录中，或配置文件损坏', 'warn')
-        elif mainController.available:
-            if wrongFiles and not DEBUG:
-                for fileName, status in wrongFiles:
-                    if status == 1:
-                        sys_print(u'检测到错误放置的内容：'+fileName.decode('utf8'), 'warn')
-                    elif status == 2:
-                        sys_print(u'检测到内容过大的文件：'+fileName.decode('utf8'), 'warn')
-                    elif status == 3:
-                        sys_print(u'检测到意义不明的文件：'+fileName.decode('utf8'), 'warn')
-                sys_print(u'请确保单条笔记有md或html的正文且不大于%s字节'%mainController.ls.maxUpload)
+def sys_input(s):                                                                                            #定义 系统_输入按照s
+    return input(s.encode(sys.stdin.encoding)).decode(sys.stdin.encoding)                                    #返回输入按照s的解码按照系统的输出的解码格式，的编码按照系统的输出的解码格式
+def check_files_format(fn):                                                                                  #定义 检查_文件_格式按照fn
+    def _check_files_format(*args, **kwargs):                                                                # _检查_文件_格式按照fn
+        mainController = Controller()                                                                        # 主线控制器 设置为控制器函数
+        configFound, wrongFiles = mainController.check_files_format()                                        # 配置建立，错误文件 设置为 主线控制器的检查_文件_格式函数
+        if not configFound:                                                                                 #如果没有配置创建
+            sys_print(u'检测到你不在印象笔记主目录中，或配置文件损坏', 'warn')                              #系统_打印按照u'检测到你不在印象笔记主目录中，或配置文件损坏', 'warn'
+        elif mainController.available:                                                                      # 否则如果 主线控制器的可获得的
+            if wrongFiles and not DEBUG:                                                                    # 如果错误文件并且没有差错
+                for fileName, status in wrongFiles:                                                         #由于 文件名.状态 在错误文件中
+                    if status == 1:                                                                         #如果 状态是1
+                        sys_print(u'检测到错误放置的内容：'+fileName.decode('utf8'), 'warn')               #系统打印按照（u'检测到错误放置的内容：'+fileName.decode('utf8'), 'warn'）
+                    elif status == 2:                                                                       #否则如果 状态是2
+                        sys_print(u'检测到内容过大的文件：'+fileName.decode('utf8'), 'warn')               #系统打印按照(u'检测到内容过大的文件：'+fileName.decode('utf8'), 'warn')
+                    elif status == 3:                                                                       #否则如果 状态是3
+                        sys_print(u'检测到意义不明的文件：'+fileName.decode('utf8'), 'warn')               #系统打印(u'检测到意义不明的文件：'+fileName.decode('utf8'), 'warn')
+                sys_print(u'请确保单条笔记有md或html的正文且不大于%s字节'%mainController.ls.maxUpload)     #系统打印
                 sys_print(u'请确保没有文件夹格式的附件，或名为.DS_Store的笔记及笔记本。')
             else:
                 return fn(mainController, *args, **kwargs)
